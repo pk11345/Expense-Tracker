@@ -20,12 +20,15 @@ const Signup = () => {
         console.log(email,username,password)
         
 
-        const userInfo = JSON.parse(localStorage.getItem("user"))||[]
-        if(userInfo.email){
-            alert("user exist")
-        }
+        const userInfo = JSON.parse(localStorage.getItem("users"))||[]
+        const userExist = userInfo.find((user) => user.email === email)
+
+         if (userExist) {
+          alert("User already exists with this email")
+           }
         else{
-            localStorage.setItem("user",JSON.stringify(form) )
+            userInfo.push(form)
+            localStorage.setItem("users",JSON.stringify(userInfo) )
             alert("signup success")
         }
     }

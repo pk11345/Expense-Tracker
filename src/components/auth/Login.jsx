@@ -1,10 +1,17 @@
 import React, { useState } from 'react'
-import { Link } from 'react-router-dom'
+import { useDispatch, useSelector } from 'react-redux'
+import { Link, useNavigate } from 'react-router-dom'
+import { login } from '../../redux/action'
 
 const Login = () => {
   
      const [password, setPassword] = useState("")
      const [email, setEmail] = useState("")
+
+     const navigate = useNavigate()
+
+     const dispatch = useDispatch()
+    
      
  
      const handleSubmit = (e)=>{
@@ -13,9 +20,22 @@ const Login = () => {
         
          setPassword("")
          console.log(email,password)
+         const userInfo = JSON.parse(localStorage.getItem("users"))
+    //  console.log(userInfo)
+
+     const userExist = userInfo.find((user) => user.email === email)
+     console.log(userExist)
+
+     if(!userExist){
+        alert("user not found")
      }
-     const userInfo = JSON.parse(localStorage.getItem("user"))
-     console.log(userInfo)
+     else{
+        alert("Login success")
+     dispatch(login(userExist)) 
+        navigate("/")
+     }
+     }
+     
  
    return (
     <>
@@ -62,7 +82,7 @@ const Login = () => {
              <div>
                 <button 
             className=' font-bold text-pretty text-indigo-400 italic p-3 bg-white rounded-xl
-             hover:bg-gray-300/40 cursor-pointer'> <Link to="/">
+             hover:bg-gray-300/40 cursor-pointer'> <Link to="/signup">
                     Create Account</Link></button>
             </div>
         </form>
